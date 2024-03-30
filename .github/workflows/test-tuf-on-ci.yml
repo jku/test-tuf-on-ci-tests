@@ -24,7 +24,7 @@ jobs:
         run: |
           ls -l dedup_dir
           echo "Dedup key is:"
-          sh256sum dedup_dir/* | sha256sum | cut -d " " -f 1
+          sha256sum dedup_dir/* | sha256sum | cut -d " " -f 1
 
   test-upgrade-test:
     runs-on: ubuntu-latest
@@ -32,7 +32,7 @@ jobs:
       - name: repository test with upgrade test
         uses: jku/tuf-on-ci/actions/test-repository@test-repository-improvements
         with:
-          metadata_url: https://https://sigstore.github.io/root-signing-staging/
+          metadata_url: https://sigstore.github.io/root-signing-staging/
           update_base_url: https://tuf-repo-cdn.sigstage.dev/
           compare_source: false
           valid_days: 2
@@ -44,10 +44,10 @@ jobs:
       - name: repository test with unreasonable reference time
         uses: jku/tuf-on-ci/actions/test-repository@test-repository-improvements
         with:
-          metadata_url: https://https://sigstore.github.io/root-signing-staging/
-          update_base_url: https://tuf-repo-cdn.sigstage.dev/
+          metadata_url: https://tuf-repo-cdn.sigstage.dev/
           compare_source: false
           valid_days: 16
+          offline_valid_days: 15
 
   test-expect-fail2:
     runs-on: ubuntu-latest
@@ -55,8 +55,7 @@ jobs:
       - name: repository test with unreasonable reference time
         uses: jku/tuf-on-ci/actions/test-repository@test-repository-improvements
         with:
-          metadata_url: https://https://sigstore.github.io/root-signing-staging/
-          update_base_url: https://tuf-repo-cdn.sigstage.dev/
+          metadata_url: https://tuf-repo-cdn.sigstage.dev/
           compare_source: false
           valid_days: 2
           offline_valid_days: 200
