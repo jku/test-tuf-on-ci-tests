@@ -1,4 +1,4 @@
-name: root-signing GCS repository tests
+name: tuf-on-ci repository test examples
 
 on:
   workflow_dispatch:
