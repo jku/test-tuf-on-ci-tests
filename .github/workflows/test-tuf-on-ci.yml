@@ -26,6 +26,27 @@ jobs:
           echo "Dedup key is:"
           sha256sum dedup_dir/* | sha256sum | cut -d " " -f 1
 
+  test-oncall-prober-with-initial-root:
+    runs-on: ubuntu-latest
+    steps:
+      - name: fetch initial root
+        run: curl -o root.json https://tuf-repo-cdn.sigstore.dev/5.root.json
+
+      - name: repository test with a repo that has incompatible metadata before root v5
+        uses: jku/tuf-on-ci/actions/test-repository@test-repository-improvements
+        with:
+          metadata_url: https://tuf-repo-cdn.sigstore.dev/
+          metadata_dir: dedup_dir
+          compare_source: false
+          valid_days: 2
+          offline_valid_days: 15
+
+      - name: Pretend deduplication step
+        run: |
+          ls -l dedup_dir
+          echo "Dedup key is:"
+          sha256sum dedup_dir/* | sha256sum | cut -d " " -f 1
+
   test-upgrade-test:
     runs-on: ubuntu-latest
     steps:
